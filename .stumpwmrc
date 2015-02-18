@@ -1,196 +1,91 @@
+;;;; -*- Mode: Lisp -*-
+
 (in-package :stumpwm)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; Global variable  ;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Default programs for various functions
+(ql:quickload :swank)
+(let ((server-running nil)
+      (first-time t))
+  (defcommand swank () ()
+    "Toggle the swank server on/off."
+    (if server-running
+        (progn
+          (swank:stop-server 4005)
+          (echo-string
+           (current-screen)
+           "Stopping swank.")
+          (setf server-running nil))
+        (progn
+          (swank:create-server :port 4005
+                               :style swank:*communication-style*
+                               :dont-close t)
+	  (if first-time
+            (echo-string
+             (current-screen)
+             "Re-starting swank.")
+	    (setf first-time nil))
+          (setf server-running t)))))
+;; Now call the re-defined command
+(swank)
 
-;; Load swank.
-;;*prefix-key* ; swank will kick this off
-(require 'swank)
-(swank:create-server)
+;; Set up the root window characteristics.
+(run-shell-command "xsetroot -cursor_name left_ptr -solid black -name root-window")
 
-(defun cat (&rest strings) "Concatenates strings, like the Unix command 'cat'. A shortcut for (concatenate 'string foo bar)."
-  (apply 'concatenate 'string strings))
-
-;(setf *window-border-style* :TIGHT)
-
-(defparameter WEB-BROWSER "exec firefox"
-  "Set default web browser")
-(setf *shell-program* (stumpwm:getenv "SHELL"))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; Functions aliases and macros ;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; --- process management ----------------------------------------
-(defun ps-exists (ps)
-  (let ((f "ps -ef | grep ~S | grep -v -e grep -e stumpish | wc -l"))
-    (< 0 (parse-integer (run-shell-command (format nil f ps) t)))))
-
-(defun start-uniq-command-ps (command &key op (bg t))
-  (unless (ps-exists command)
-    (run-shell-command
-     (concat command " " (or op "") " " (if bg "&" "")))))
-
-(defun kill-ps-command (command)
-  (format nil "kill -TERM `ps -ef | grep ~S | grep -v grep | awk '{print $2}'`"
-          command))
-
-(defun kill-ps (command)
-  (run-shell-command (kill-ps-command command)))
-
-
-
-(defun shell-command (command) "Run a shell command and display output to screen.
-   This must be used in a functional side-effects-free style! If a program does not
-   exit of its own accord, Stumpwm might hang!"
-          (check-type command string)
-          (echo-string (current-screen) (run-shell-command command t)))
-
-(define-stumpwm-command "shell-command" ((command :string "sh: " :string))
-     (check-type command string)
-     (shell-command command))
-
-(defun replace-all (string part replacement &key (test #'char=))
-"Returns a new string in which all the occurences of the PART is replaced with REPLACEMENT."
-(with-output-to-string (out)
-  (loop with part-length = (length part)
-       for old-pos = 0 then (+ pos part-length)
-       for pos = (search part string
-			 :start2 old-pos
-			 :test test)
-       do (write-string string out
-			:start old-pos
-			:end (or pos (length string)))
-       when pos do (write-string replacement out)
-       while pos)))
-(defun browse-url (url-string)
-  "Browse url using WEB-BROWSER"
-  (check-type url-string string)
-  (run-shell-command (concat WEB-BROWSER "\"" url-string "\"")))
-
-(defcommand browser-find (url-string) ((:string "Browse to: "))
-  (check-type url-string string)
-  (browse-url url-string))
-(defcommand setup-phy () ()
-  "Setup display and keyboard for my office at work"
-  (run-shell-command "xrandr --output HDMI1 --off --output LVDS1 --mode 1366x768 --pos 0x0 --rotate normal --output DP1 --off --output VGA1 --off")
-  (run-shell-command "xrandr --output HDMI1 --off --output LVDS1 --mode 1366x768 --pos 0x0 --rotate normal --output DP1 --off --output VGA1 --mode 1920x1080 --pos 1366x0 --rotate normal")
-  (run-shell-command "xmodmap .xmodmap")
-  (run-shell-command "xset b off")
-;set wallpaper
-  (run-shell-command "sleep 2 && feh --bg-fill /home/dave/Dropbox/Photos/cherry_blossoms.jpg"))
-
-(define-key *top-map* (kbd "F12")   "setup-phy")
-
-
-(defcommand google (search-string) ((:string "Search for: "))
-  "Ask user for a search string and search Google for it."
-  (check-type search-string string)
-  (run-shell-command (cat "surfraw google " search-string)))
-(defcommand google-ifl (search-string) ((:string "Jump to: "))
-  "Same as GOOGLE, but with i'm feeling lucky on"
-  (check-type search-string string)
-  (run-shell-command (cat "surfraw google -l " search-string)))
-
-
-(define-stumpwm-command "google-selection" ()
-  "Get the X selection and search for it through Google."
-  (run-shell-command (cat "exec surfraw google " (get-x-selection))))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Multimedia functions ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(defcommand notify-caps () ()
-  "Notify caps lock status when button is pressed"
-  (run-shell-command "~/Dropbox/notify_caps.sh"))
-
-(defcommand vol-up () ()
-  "Increase the volume from the shell"
-  (run-shell-command
-   "pacmd set-sink-volume 0 $(printf '0x%x' $(( $(pacmd dump|grep set-sink-volume|cut -f3 -d' ') + 0xf00)) ) &> /dev/null"))
-(defcommand vol-down () ()
-  "Decrease the volume  from the shell"
-  (run-shell-command
-   "pacmd set-sink-volume 0 $(printf '0x%x' $(( $(pacmd dump|grep set-sink-volume|cut -f3 -d' ') - 0xf00)) ) &> /dev/null"))
-;; FIXME: Implement this function
-(defcommand vol-mute () ()
-  "toggle mute"
-  (run-shell-command
-   "pacmd set-sink-mute 0 $(if [ $(pacmd dump |grep set-sink-mute | cut -f 3 -d' ' ]; then echo yes; else echo no; fi;)"))
-
-(define-key *root-map* (kbd "Print")
-  "exec import -window root png:$HOME/screenshot_$(date +%F_%H-%M-%S).png")
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;; Startup programs ;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Enable X11 zap
-(run-shell-command "setxkbmap -option terminate:ctrl_alt_bksp")
-(run-shell-command "setxkbmap -option caps:ctrl_modifier")
-;; Disable annoying accessiblity features
-(run-shell-command "xkbset -a")
-
-
-;; Start pulseaudio so that we have sound!
-(run-shell-command "pulseaudio --start")
-
-(run-shell-command "xmodmap ~/.xmodmap")
-
-;; Load Xresources for custom fonts/colors in different programs
-(run-shell-command "xrdb -load ~/.Xresources -quiet")
-;; Must run after Xresources to make sure that the settings in xresources get read into the daemon.
-(run-shell-command "urxvtd -q -f -o")
-
-;; Set up dropbox to sync files (especially the .emacs and .stumpwmrc!)
-(run-shell-command "sh /home/dave/.dropbox-dist/dropboxd &> /dev/null &")
-
-(run-shell-command "nm-applet &> /dev/null &")
-(run-shell-command "xfce4-panel &> /dev/null &")
-
-(run-shell-command "xfce4-volumed &> /dev/null &")
-(run-shell-command "xfce4-power-manager &> /dev/null &")
-(run-shell-command "/usr/lib/notify-osd/notify-osd &> /dev/null &")
-
-(run-shell-command "feh --bg-scale /usr/share/wallpapers/Dance_of_the_Spirits/contents/images/1280x800.jpg")
-
-;; Disable annoying system bell
-(run-shell-command "xset b off")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;; Keybindings and re-definitions;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; change the prefix key
+;; Set the prefix key to something for both hands.
 (set-prefix-key (kbd "C-q"))
 
-;; Set up terminals
-;; \"-lispm-fixed-medium-r-normal-*-13-*-*-*-*-*-*-*\"
+;; I like at least 10 seconds for messages.
 
-(defparameter X-TERM "exec terminology"
-  "X-TERM command definition so we can launch a terminal emulator")
-;"exec emacsclient -c -e '(shell-switcher-new-shell)'"
+(setf *timeout-wait* 10)
 
-(define-key *root-map* (kbd "c") X-TERM)
-(define-key *root-map* (kbd "C-c") X-TERM)
-;; Set up emacs client
-(define-key *root-map* (kbd "e") "exec emacsclient -c ")
+;; Startup message: display the machine's name.
 
-;; Browsing
-(define-key *root-map* (kbd "C-f") WEB-BROWSER)
-(define-key *root-map* (kbd "f") "exec conkeror")
-(define-key *root-map* (kbd "F") "google-ifl")
+(setf *startup-message* (machine-instance))
 
-;; Surfraw
-(define-key *root-map* (kbd "G") "google")
+;; I like messages to be centered on the screen.
 
-;; Multimedia!!
-;(define-key *top-map*  (kbd "Caps Lock") "notify-caps")
-(define-key *top-map* (kbd "XF86AudioLowerVolume")   "vol-down")
-(define-key *top-map* (kbd "XF86AudioRaiseVolume")   "vol-up")
-(define-key *top-map* (kbd "C-(")  "vol-down")
-(define-key *top-map* (kbd "C-)")  "vol-up")
-(define-key *top-map* (kbd "C-*")  "vol-mute")
+(setf *message-window-gravity* :center)
+(setf *input-window-gravity* :center)
+
+;; I thought that this mode-line was fabulous!
+
+(defvar *battery-status-command*
+  "acpi -b | awk -F '[ ,]' '{printf \"%s%s\", $3, $5}' | sed s/Discharging/\-/ | sed s/Unknown// | sed s/Full// | sed s/Charging/+/")
+
+(defvar *vol-status-command*
+  "amixer get Master | grep [[:digit:]]\\+%' -o | tr -d '\\n'")
+
+(setf *screen-mode-line-format*
+      (list "[^B%n^b] %W^>"
+      '(:eval (run-shell-command *battery-status-command* t))
+      " | Vol. "
+      '(:eval (run-shell-command *vol-status-command* t))
+      " | %d"))
+
+(setf *window-format* "%m%n%s%c")
+
+(setf *mode-line-timeout* 1)
+
+;; Turn on the new mode line.
+
+(toggle-mode-line (current-screen)
+                  (current-head))
+
+;; Factor this xterm-substitute someday.
+
+(define-key *root-map* (kbd "c")
+  "exec urxvt +sb -fn \"xft:Terminus:pixelsize=10\"")
+
+;; Set the mouse focus.
+
+(setf *mouse-focus-policy* :click)
+
+;; Define the volume control and mute keys.
+
+(define-key *top-map* (kbd "XF86AudioLowerVolume") "exec amixer set Master 5%-")
+(define-key *top-map* (kbd "XF86AudioRaiseVolume") "exec amixer set Master 5%+")
+(define-key *top-map* (kbd "XF86AudioMute") "exec amixer set Master toggle")
+
+;; Use this command to see window properties; needed by the
+;; (define-frame-preference ...) functions, below.
+
+(define-key *root-map* (kbd "I") "show-window-properties")

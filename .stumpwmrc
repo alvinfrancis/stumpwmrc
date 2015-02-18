@@ -2,6 +2,7 @@
 
 (in-package :stumpwm)
 
+;; Swank for Slime connection
 (ql:quickload :swank)
 (let ((server-running nil)
       (first-time t))
@@ -24,7 +25,6 @@
              "Re-starting swank.")
 	    (setf first-time nil))
           (setf server-running t)))))
-;; Now call the re-defined command
 (swank)
 
 ;; Set up the root window characteristics.

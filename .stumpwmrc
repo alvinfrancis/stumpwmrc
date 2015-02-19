@@ -72,8 +72,8 @@
 ;; Gravities
 (setf *mouse-focus-policy* :click
       *window-border-style* :thin
-      *message-window-gravity* :top-right
-      *input-window-gravity* :top-right)
+      *message-window-gravity* :top
+      *input-window-gravity* :center)
 (set-normal-gravity :top) ; top for terminals
 (set-maxsize-gravity :center) ; center for floating X apps
 (set-transient-gravity :center) ; center for save-as/open popups

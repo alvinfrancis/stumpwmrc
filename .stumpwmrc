@@ -25,7 +25,6 @@
                "Re-starting swank.")
               (setf first-time nil))
           (setf server-running t)))))
-(swank)
 
 ;; Utility Macros
 (defmacro ->> (&rest body)

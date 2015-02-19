@@ -48,6 +48,10 @@
                   *home-dir*)
       *undo-data-dir* (make-pathname :directory "/tmp/user-keep/h")
       *scratchpad-group-name* ".scratchpad"
+      *contrib-dir* (merge-pathnames
+                     (make-pathname :directory
+                                    '(:relative ".stumpwm.d" "contrib"))
+                     *home-dir*)
       *debug-level* 1)
 
 ;; setup a quick function for redirecting debug information directly to file.

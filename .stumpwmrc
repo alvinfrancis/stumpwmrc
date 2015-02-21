@@ -42,6 +42,9 @@
 ;; set undo directory to store each group (and desktop) undo states.
 ;; set scratchpad group name for when it's created on the fly (.NAME to hide)
 (setf *home-dir* (make-pathname :directory "/home/alvin")
+      *load-dir* (merge-pathnames
+                  (make-pathname :directory '(:relative ".stumpwm.d"))
+                  *home-dir*)
       *data-dir* (merge-pathnames
                   (make-pathname :directory
                                  '(:relative "conf" "stumpwm" "storage"))
@@ -49,9 +52,8 @@
       *undo-data-dir* (make-pathname :directory "/tmp/user-keep/h")
       *scratchpad-group-name* ".scratchpad"
       *contrib-dir* (merge-pathnames
-                     (make-pathname :directory
-                                    '(:relative ".stumpwm.d" "contrib"))
-                     *home-dir*)
+                     (make-pathname :directory '(:relative "contrib"))
+                     *load-dir*)
       *debug-level* 1)
 
 ;; setup a quick function for redirecting debug information directly to file.

@@ -149,12 +149,6 @@
 
 ;; Set the prefix key to something for both hands.
 (set-prefix-key (kbd "C-q"))
-;; I thought that this mode-line was fabulous!
-
-(setf *screen-mode-line-format*
-      (list "[^B%n^b] %W^>"))
-
-;; Turn on the new mode line.
 
 (toggle-mode-line (current-screen)
                   (current-head))

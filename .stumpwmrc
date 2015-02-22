@@ -144,7 +144,7 @@
       *input-history-ignore-duplicates* 0)
 
 ;; Set up the root window characteristics.
-(run-shell-command "xsetroot -cursor_name left_ptr -solid black -name root-window")
+;; (run-shell-command "xsetroot -cursor_name left_ptr -solid black -name root-window")
 
 ;; Set the prefix key to something for both hands.
 (set-prefix-key (kbd "C-q"))

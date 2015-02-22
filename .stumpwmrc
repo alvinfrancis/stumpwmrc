@@ -97,9 +97,8 @@
       *float-window-title-height* 1)
 (set-msg-border-width 3)
 
-;; fonts/colors. (custom font; full unicode "Fixed" with emphasized numeric 0's <> alphabetic O's)
-(set-font "-misc-fixedzero-medium-r-semicondensed-*-12-110-75-75-c-60-iso10646-1")
-;(set-font "-misc-fixed-medium-r-semicondensed-*-12-110-75-75-c-60-koi8-r")
+;; (set-font "-*-neep-medium-*-semicondensed-*-11-*-*-*-*-*-*-*")
+(set-font "-xos4-terminus-medium-r-normal--12-120-72-72-c-60-iso8859-9")
 (set-fg-color        "grey64")
 (set-bg-color        "grey10")
 (set-focus-color     "grey22")

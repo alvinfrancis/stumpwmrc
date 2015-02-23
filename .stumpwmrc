@@ -117,13 +117,6 @@
                      "lightskyblue4"))  ; 9 user
 (update-color-map (current-screen))
 
-;; text formatting (mode-line unused).
-(setf *time-format-string-default* "^B^5*%b.%d^n ^7*|^n|^B^7*|^n ^B^4*%T^n ^B^7*|^n|^7*|^n ^B^5*%A^n"
-      *group-format* "^B^0*%t^7*%s^07|^n"
-      *window-format* "^B^87%s^9*%m^0*%16t^n"
-      *screen-mode-line-format* nil
-      *timeout-wait* 6)
-
 ;; windows/frames. use more intuitive frame-numbers (with 'fselect').
 (setf *default-window-name* "null"
       *new-frame-action* :empty

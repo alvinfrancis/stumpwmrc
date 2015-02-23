@@ -132,16 +132,6 @@
       *resize-increment* 2
       *frame-number-map* "yhjukilop")
 
-;; mode-line and input. (mode-line unused)
-(setf *mode-line-background-color* "grey5"
-      *mode-line-border-color* "grey10"
-      *mode-line-foreground-color* "azure4" *mode-line-border-width* 1
-      *mode-line-pad-x* 1
-      *mode-line-pad-y* 0
-      *mode-line-timeout* 6000
-      *mode-line-position* :top
-      *input-history-ignore-duplicates* 0)
-
 ;; Set up the root window characteristics.
 ;; (run-shell-command "xsetroot -cursor_name left_ptr -solid black -name root-window")
 

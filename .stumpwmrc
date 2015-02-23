@@ -117,9 +117,8 @@
                      "lightskyblue4"))  ; 9 user
 (update-color-map (current-screen))
 
-;; windows/frames. use more intuitive frame-numbers (with 'fselect').
-(setf *default-window-name* "null"
-      *new-frame-action* :empty
+(setf *default-window-name* "NIL"
+      *new-frame-action* :last-window
       *min-frame-width* 25
       *min-frame-height* 25
       *resize-increment* 2

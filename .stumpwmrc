@@ -164,3 +164,7 @@
              (make-pathname :directory '(:relative "lisp")
                             :name file :type "lisp")
              *load-dir*)))
+
+(loop for module in '("stumptray")
+   do (load-contrib-module "util" module))
+(load-module "stumptray")  ;; requires xembed

@@ -56,14 +56,14 @@
                      *load-dir*)
       *debug-level* 1)
 
-(defun load-modeline-module (name)
+(defun load-contrib-module (contrib module)
   (add-to-load-path
    (merge-pathnames
-    (make-pathname :directory (list :relative "modeline" name))
+    (make-pathname :directory (list :relative contrib module))
     *contrib-dir*)))
 
-(loop for file in '("wifi" "cpu" "disk" "net" "battery" "battery-portable")
-   do (load-modeline-module file))
+(loop for module in '("wifi" "cpu" "disk" "net" "battery" "battery-portable")
+   do (load-contrib-module "modeline" module))
 
 ;; setup a quick function for redirecting debug information directly to file.
 ;; (prefer internal handling as opposed to redirecting via exec $ >>! file)

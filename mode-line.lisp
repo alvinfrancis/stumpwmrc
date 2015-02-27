@@ -1,5 +1,5 @@
 (in-package :stumpwm)
-(loop for file in '("cpu" "disk" "net" "wifi" "battery" "battery-portable")
+(loop for file in '("cpu" "disk" "net" "wifi" "battery-portable")
    do (load-module file))
 
 (defun read-ml-file (s)

@@ -148,12 +148,6 @@
 
 (setf *mouse-focus-policy* :click)
 
-;; Define the volume control and mute keys.
-
-(define-key *top-map* (kbd "XF86AudioLowerVolume") "exec amixer set Master 5%-")
-(define-key *top-map* (kbd "XF86AudioRaiseVolume") "exec amixer set Master 5%+")
-(define-key *top-map* (kbd "XF86AudioMute") "exec amixer set Master toggle")
-
 ;; Use this command to see window properties; needed by the
 ;; (define-frame-preference ...) functions, below.
 
@@ -165,7 +159,7 @@
       *grab-pointer-foreground* (xlib:make-color :red 0.24 :green 0.70 :blue 0.44)
       *grab-pointer-background* (xlib:make-color :red 0.173 :green 0.325 :blue 0.792))
 
-(loop for file in '("mode-line" "gaps")
+(loop for file in '("mode-line" "gaps" "keymap")
    do (load (merge-pathnames
              (make-pathname :directory '(:relative "lisp")
                             :name file :type "lisp")

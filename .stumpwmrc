@@ -95,26 +95,32 @@
       *transient-border-width* 2
       *float-window-border* 0
       *float-window-title-height* 10)
+(set-float-focus-color "#bea492")
+(set-float-unfocus-color "#181512")
+(set-focus-color     "#bea492")
+(set-unfocus-color   "#181512")
+(set-fg-color        "#8c644c")
+(set-bg-color        "#181512")
 (set-msg-border-width 3)
 
 ;; (set-font "-*-neep-medium-*-semicondensed-*-11-*-*-*-*-*-*-*")
 (set-font "-xos4-terminus-medium-r-normal--12-120-72-72-c-60-iso8859-9")
-(set-fg-color        "grey64")
-(set-bg-color        "grey10")
-(set-focus-color     "grey22")
-(set-unfocus-color   "grey10")
+;; (set-fg-color        "grey64")
+;; (set-bg-color        "grey10")
+;; (set-focus-color     "grey22")
+;; (set-unfocus-color   "grey10")
 (set-border-color    "grey10")
 (set-win-bg-color    "grey6")
-(setf *colors* (list "grey9"            ; 0 black
-                     "deeppink"         ; 1 red
-                     "chartreuse3"      ; 2 green
-                     "gold1"            ; 3 yellow
-                     "steelblue3"       ; 4 blue
-                     "mediumpurple4"    ; 5 magenta
-                     "cyan3"            ; 6 cyan
-                     "honeydew4"        ; 7 white
-                     "thistle4"         ; 8 user
-                     "lightskyblue4"))  ; 9 user
+(setf *colors* (list "#181512" ; 0 black
+                     "#8c644c" ;; 1 red
+                     "#c4be90" ;; 2 green
+                     "#fafac0" ;; 3 yellow
+                     "#646a6d" ;; 4 blue
+                     "#656565" ;; 5 magenta
+                     "#3b484a" ;; 6 cyan
+                     "#bea492" ;; 7 white
+                     "#9a875f" ; 8 user
+                     "#9a875f"))  ; 9 user
 (update-color-map (current-screen))
 
 (setf *default-window-name* "NIL"

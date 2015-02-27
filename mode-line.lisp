@@ -77,6 +77,11 @@
        '(:eval (string-right-trim '(#\Newline) (run-shell-command "date +'^B%m-%d ^6*%R ^b'" t)))
        ))
 
+(defcommand battery-info () ()
+  "Show battery info"
+  (echo-string (current-screen)
+               (battery-portable::battery-info-string)))
+
 (defcommand uaml () ()
   ""
   (update-all-mode-lines))

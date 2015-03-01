@@ -77,9 +77,8 @@
        '(:eval (string-right-trim '(#\Newline) (run-shell-command "date +'^B%m-%d ^6*%R ^b'" t)))
        ))
 
-
-(defcommand uaml () ()
-  ""
+(defcommand mode-line-update () ()
+  "Update all mode lines."
   (update-all-mode-lines))
 
 (dolist (head

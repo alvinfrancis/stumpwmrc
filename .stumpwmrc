@@ -168,3 +168,6 @@
 (loop for module in '("stumptray")
    do (load-contrib-module "util" module))
 (load-module "stumptray")  ;; requires xembed
+
+(setf *window-format* " %n%m%c ")
+(setf *resize-hides-windows* nil)

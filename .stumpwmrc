@@ -136,9 +136,6 @@
 ;; Set the prefix key to something for both hands.
 (set-prefix-key (kbd "C-q"))
 
-(toggle-mode-line (current-screen)
-                  (current-head))
-
 ;; Factor this xterm-substitute someday.
 
 (define-key *root-map* (kbd "c")

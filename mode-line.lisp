@@ -61,19 +61,19 @@
        ;; "MIX:^5 "
        ;; '(:eval (read-file "/home/alvin/.amix"))
        "^n^B | ^b"
-       "^7*^B<<^b^n %c <<" ; cpu
-       "^B ^b "
-       "^6*[^n^B%I^b^6*]^n "
+       "%C" ; cpu
+       "^B | ^b"
+       "^6*[^n^B%I^b^6*]^n"
        "^B | ^b"
        "%l" ; net
        ;; "^B | ^b "
        ;; ;;"^7*^Bµ^b^n "
        ;; '(:eval (read-file "/home/alvin/.inet"))
        "^B | ^b"
-       "%D" ; disk
+       ;; "%D" ; disk
        ;; "^B | ^b"
        ;; "%B" ; battery
-       "^B | ^b "
+       ;; "^B | ^b"
        '(:eval (string-right-trim '(#\Newline) (run-shell-command "date +'^B%m-%d ^6*%R ^b'" t)))
        ))
 

@@ -9,3 +9,7 @@
 (amixer::defvolcontrol Master-dec "Master" "1%-")
 (amixer::defvolcontrol Master-inc "Master" "1%+")
 (amixer::defvolcontrol Master-toggle "Master" "toggle")
+
+(defcommand firefox () ()
+  "Run or raise Firefox"
+  (run-or-raise "firefox" '(:class "Firefox")))

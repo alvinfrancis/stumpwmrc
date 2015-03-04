@@ -172,5 +172,5 @@
    do (load-contrib-module "util" module))
 (load-module "stumptray")  ;; requires xembed
 
-(setf *window-format* " %n%m%c ")
+(setf *window-format* "^B%m%n ^b %20c ")
 (setf *resize-hides-windows* nil)

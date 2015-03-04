@@ -1,3 +1,8 @@
+;; Frame management
+(define-key *root-map* (kbd "=") "rebalance")
+(define-key *root-map* (kbd "s") "vsplit")
+(define-key *root-map* (kbd "v") "hsplit")
+
 ;; Define the volume control and mute keys.
 
 (define-key *top-map* (kbd "XF86AudioLowerVolume") "Master-dec")

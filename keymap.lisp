@@ -1,3 +1,15 @@
+;; Frame movement
+(loop for (vi-key name) in '(("k" "up")
+                             ("j" "down")
+                             ("h" "left")
+                             ("l" "right"))
+   do (let ((key-combo (format nil "s-~A" vi-key))
+            (shifted-key-combo (format nil "s-~A" (string-upcase vi-key))))
+        (define-key *top-map* (kbd key-combo)
+          (format nil "move-focus ~A" name))
+        (define-key *top-map* (kbd shifted-key-combo)
+          (format nil "move-window ~A" name))))
+
 ;; Frame management
 (define-key *root-map* (kbd "=") "rebalance")
 (define-key *root-map* (kbd "s") "vsplit")

@@ -159,7 +159,7 @@
       *grab-pointer-foreground* (xlib:make-color :red 0.24 :green 0.70 :blue 0.44)
       *grab-pointer-background* (xlib:make-color :red 0.173 :green 0.325 :blue 0.792))
 
-(loop for file in '("commands" "mode-line" "gaps" "keymap")
+(loop for file in '("commands" "websearch" "mode-line" "gaps" "keymap")
    do (load (merge-pathnames
              (make-pathname :directory '(:relative "lisp")
                             :name file :type "lisp")

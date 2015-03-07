@@ -2,46 +2,9 @@
 (loop for file in '("cpu" "disk" "net" "wifi" "battery-portable")
    do (load-module file))
 
-(defun read-ml-file (s)
-  (read-file (str "/dev/shm/" s)))
+(setf *time-modeline-string* "%a %m-%d ^5*^B%l:%M^b^n"
+      *mode-line-position* :top)
 
-(defun color-ping (s)
-  (if (equal s "")
-      ""
-      (let* ((words (cl-ppcre:split "\\s+" s))
-             (ping (nth 5 words))
-             (color (bar-zone-color (read-from-string ping)
-                                    300 700 1000))
-             (colored-ping (format nil "^[~A~3D^]" color ping)))
-        (cl-ppcre:regex-replace ping s colored-ping))))
-
-(defun colour (key)
-  (let ((colours '(:base03 #x002b36
-                   :base02 #x073642
-                   :base01 #x586e75
-                   :base00 #x657b83
-                   :blue0 #x373b43
-                   :ypnose #x1c2027
-                   :ypnosebl #x3e7ef3
-                   :ypnosecy #x30a8e0
-                   :blue1 #x242931
-                   :base2 #xeee8d5
-                   :base3 #xfdf6e3
-                   :yellow #x99ad6a
-                   :orange #xcb4b16
-                   :red #xdc322f
-                   :magenta #xd33682
-                   :violet #x6c71c4
-                   :blue #x268bd2
-                   :cyan #x87ceeb
-                   :dfx #x14db49
-                   :pnevma #x000000
-                   :green #x8ae234)))
-    (getf colours key)))
-
-(setf *time-modeline-string* "%a %m-%d ^5*^B%l:%M^b^n")
-
-(setq stumpwm:*mode-line-position* :top)
 (setf stumpwm:*screen-mode-line-format*
       (list
        "^B[^b"

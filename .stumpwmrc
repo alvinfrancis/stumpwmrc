@@ -98,12 +98,6 @@
       *transient-border-width* 2
       *float-window-border* 0
       *float-window-title-height* 10)
-;; (set-float-focus-color "#bea492")
-;; (set-float-unfocus-color "#181512")
-;; (set-focus-color     "#bea492")
-;; (set-unfocus-color   "#181512")
-;; (set-fg-color        "#8c644c")
-;; (set-bg-color        "#181512")
 (set-msg-border-width 3)
 
 ;; (set-font "-*-neep-medium-*-semicondensed-*-11-*-*-*-*-*-*-*")

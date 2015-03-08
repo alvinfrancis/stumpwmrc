@@ -15,7 +15,7 @@
        ;; '(:eval (read-file ".dfhome"))
        ;; "^5*/^n ^6 Running:^n "
        ;; '(:eval (read-file ".inxin"))
-       "^5*/^n ^7*^B%W^b^n "
+       "^5*/^n ^7*^n%W^b^n "
        "^>" ; right align
        ;;"^6*"
        ;;'(:eval (format-gmail nil))
